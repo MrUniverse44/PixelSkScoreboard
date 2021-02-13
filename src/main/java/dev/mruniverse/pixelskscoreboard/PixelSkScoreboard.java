@@ -1,18 +1,33 @@
 package dev.mruniverse.pixelskscoreboard;
 
+import ch.njol.skript.Skript;
+import ch.njol.skript.SkriptAddon;
 import dev.mruniverse.pixelskscoreboard.files.FileStorage;
 import dev.mruniverse.pixelskscoreboard.utils.Logger;
 import dev.mruniverse.pixelskscoreboard.utils.Updater;
+import dev.mruniverse.pixelskscoreboard.utils.scoreboards.BoardManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public final class PixelSkScoreboard extends JavaPlugin {
     private Logger logger;
     private FileStorage fileStorage;
-
+    private SkriptAddon addon;
+    private BoardManager boardManager;
     @Override
     public void onEnable() {
         logger = new Logger(this);
         fileStorage = new FileStorage(this);
+        addon = Skript.registerAddon(this);
+        boardManager = new BoardManager();
+        try {
+            String[] subPackages = new String[] { "effects", "conditions" };
+            addon.loadClasses("dev.mruniverse.pixelskscoreboard", subPackages);
+            getLogs().info("Effects & conditions loaded correctly.");
+        }catch (Throwable throwable) {
+            getLogs().error("Can't load effects & conditions.");
+            getLogs().error(throwable);
+        }
+
         if(getStorage().getSettings().getBoolean("settings.update-check")) {
             Updater updater = new Updater(this,80983);
             String updaterResult = updater.getUpdateResult();
@@ -60,6 +75,13 @@ public final class PixelSkScoreboard extends JavaPlugin {
             }
         }
     }
+    /**
+     * Public hasPAPI() from Plugin's Main class.
+     * @return boolean
+     */
+    public boolean hasPAPI() {
+        return (getServer().getPluginManager().getPlugin("PlaceholderAPI") != null);
+    }
 
     /**
      * Public getLogs() from Plugin's Main class.
@@ -70,11 +92,25 @@ public final class PixelSkScoreboard extends JavaPlugin {
         return logger;
     }
     /**
-     * Public getLogs() from Plugin's Main class.
-     * @return Logger
+     * Public getStorage() from Plugin's Main class.
+     * @return FileStorage
      */
     public FileStorage getStorage() {
         if(fileStorage == null) fileStorage = new FileStorage(this);
         return fileStorage;
+    }
+    /**
+     * Public getSkript() from Plugin's Main class.
+     * @return SkriptAddon
+     */
+    public SkriptAddon getSkript() {
+        return addon;
+    }
+    /**
+     * Public getScoreboards() from Plugin's Main class.
+     * @return BoardManager
+     */
+    public BoardManager getScoreboards() {
+        return boardManager;
     }
 }

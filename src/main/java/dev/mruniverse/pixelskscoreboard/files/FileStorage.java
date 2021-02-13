@@ -51,7 +51,44 @@ public class FileStorage {
         plugin.getLogs().info(String.format("&7File &e%s.yml &7has been loaded", configName));
         return cnf;
     }
+    /**
+     * Creates a config File if it doesn't exists,
+     * reloads if specified file exists.
+     *
+     * @param configName config to create/reload.
+     */
+    public FileConfiguration loadExternalConfig(String configName) {
+        String[] config = configName.split("/");
+        String file = config[config.length - 1];
+        String pre = configName.replace(file, "");
+        File configFile;
+        if(pre.equals(""))  {
+            configFile = new File(getServerFolder(),file);
+        } else {
+            configFile = new File(pre,file);
+        }
 
+        if (!configFile.exists()) {
+            try {
+                boolean create = configFile.createNewFile();
+                if(create) plugin.getLogs().debug("File &3" + file + " &7created.");
+            } catch (Throwable throwable) {
+                plugin.getLogs().error("Can't create file: " + file);
+                plugin.getLogs().error(throwable);
+            }
+        }
+
+        FileConfiguration cnf = null;
+        try {
+            cnf = YamlConfiguration.loadConfiguration(configFile);
+        } catch (Throwable throwable) {
+            plugin.getLogs().error("Can't load your config: " + configName);
+            plugin.getLogs().error(throwable);
+        }
+
+        plugin.getLogs().info(String.format("&7File &e%s.yml &7has been loaded", configName));
+        return cnf;
+    }
     /**
      * Save config File Changes & Paths
      *
@@ -74,6 +111,33 @@ public class FileStorage {
                 plugin.getLogs().error(String.format("A error occurred while copying the config %s to the plugin data folder. Error: %s", configName, throwable));
                 plugin.getLogs().error(throwable);
             }
+        }
+    }
+
+    public void saveExternal(String ExternalFile) {
+        String[] config = ExternalFile.split("/");
+        String file = config[config.length - 1];
+        String pre = ExternalFile.replace(file, "");
+        File configFile;
+        if(pre.equals(""))  {
+            configFile = new File(getServerFolder(),file);
+        } else {
+            configFile = new File(pre,file);
+        }
+        if (!configFile.exists()) {
+            try {
+                boolean create = configFile.createNewFile();
+                if(create) plugin.getLogs().debug("File &3" + file + " &7created.");
+            } catch (Throwable throwable) {
+                plugin.getLogs().error("Can't create file: " + file);
+                plugin.getLogs().error(throwable);
+            }
+        }
+        try {
+            loadExternalConfig(ExternalFile).save(configFile);
+        }catch (Throwable throwable) {
+            plugin.getLogs().error("Can't save settings file.");
+            plugin.getLogs().error(throwable);
         }
     }
 
