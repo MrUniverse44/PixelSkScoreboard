@@ -1,0 +1,8 @@
+name: PixelSkScoreboard
+version: ${project.version}
+main: dev.mruniverse.pixelskscoreboard.PixelSkScoreboard
+api-version: 1.16
+depend: [ Skript ]
+authors: [ MrUniverse44, Sebastnchan ]
+description: An Scoreboard addon for Skript
+website: rigox.club
