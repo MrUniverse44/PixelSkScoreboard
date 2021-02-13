@@ -3,6 +3,7 @@ package dev.mruniverse.pixelskscoreboard;
 import ch.njol.skript.Skript;
 import ch.njol.skript.SkriptAddon;
 import dev.mruniverse.pixelskscoreboard.files.FileStorage;
+import dev.mruniverse.pixelskscoreboard.listeners.PlayerListener;
 import dev.mruniverse.pixelskscoreboard.utils.Logger;
 import dev.mruniverse.pixelskscoreboard.utils.Updater;
 import dev.mruniverse.pixelskscoreboard.utils.scoreboards.BoardManager;
@@ -13,11 +14,15 @@ public final class PixelSkScoreboard extends JavaPlugin {
     private FileStorage fileStorage;
     private SkriptAddon addon;
     private BoardManager boardManager;
+    private PlayerListener playerListener;
+    private boolean hasNew = false;
     @Override
     public void onEnable() {
         logger = new Logger(this);
+        playerListener = new PlayerListener(this);
         fileStorage = new FileStorage(this);
         addon = Skript.registerAddon(this);
+        getServer().getPluginManager().registerEvents(playerListener,this);
         boardManager = new BoardManager();
         try {
             String[] subPackages = new String[] { "effects", "conditions" };
@@ -56,6 +61,7 @@ public final class PixelSkScoreboard extends JavaPlugin {
                     }
                     break;
                 case "NEW_VERSION":
+                    hasNew = true;
                     getLogs().info("&aA new update is available: &bhttps://www.spigotmc.org/resources/80983/");
                     break;
                 case "BETA_VERSION":
@@ -81,6 +87,14 @@ public final class PixelSkScoreboard extends JavaPlugin {
      */
     public boolean hasPAPI() {
         return (getServer().getPluginManager().getPlugin("PlaceholderAPI") != null);
+    }
+
+    /**
+     * Public hasNewVersion() from Plugin's Main class.
+     * @return boolean
+     */
+    public boolean hasNewVersion() {
+        return hasNew;
     }
 
     /**
@@ -112,5 +126,12 @@ public final class PixelSkScoreboard extends JavaPlugin {
      */
     public BoardManager getScoreboards() {
         return boardManager;
+    }
+    /**
+     * Public getListener() from Plugin's Main class.
+     * @return PlayerListener
+     */
+    public PlayerListener getListener() {
+        return playerListener;
     }
 }

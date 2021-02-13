@@ -11,3 +11,4 @@
 messages:
   reload: '&aPlugin has been reloaded in &b<ms>&ams.'
   error: '&7The plugin found an error with .sk: &e<script> &7error, this error was caused by the creator of this script and not by PixelSkScoreboard, please check if the code is correct.'
+  newUpdate: '&aThe plugin has a new update: &bhttps://www.spigotmc.org/resources/80983/'
