@@ -15,12 +15,14 @@ public final class PixelSkScoreboard extends JavaPlugin {
     private SkriptAddon addon;
     private BoardManager boardManager;
     private PlayerListener playerListener;
+    private static PixelSkScoreboard instance;
     private boolean hasNew = false;
     @Override
     public void onEnable() {
         logger = new Logger(this);
         playerListener = new PlayerListener(this);
         fileStorage = new FileStorage(this);
+        instance = this;
         addon = Skript.registerAddon(this);
         getServer().getPluginManager().registerEvents(playerListener,this);
         boardManager = new BoardManager();
@@ -104,6 +106,13 @@ public final class PixelSkScoreboard extends JavaPlugin {
     public Logger getLogs() {
         if(logger == null) logger = new Logger(this);
         return logger;
+    }
+    /**
+     * Public getControl() from Plugin's Main class.
+     * @return PixelSkScoreboard
+     */
+    public static PixelSkScoreboard getControl() {
+        return instance;
     }
     /**
      * Public getStorage() from Plugin's Main class.
