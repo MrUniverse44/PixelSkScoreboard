@@ -41,11 +41,12 @@ public class EffAddLineWithoutName extends Effect {
         if (file == null) return;
         if (line.getSingle(event) == null) return;
         if (file.getSingle(event) == null) return;
+        PixelSkScoreboard board = PixelSkScoreboard.getControl();
         try {
             String lineToAdd = line.getSingle(event);
             if(lineToAdd == null) lineToAdd = "";
-            File configFile = PixelSkScoreboard.getControl().getStorage().getExternalFile(Objects.requireNonNull(file.getSingle(event)));
-            FileConfiguration configuration = PixelSkScoreboard.getControl().getStorage().loadExternalConfigWithFile(configFile);
+            File configFile = board.getStorage().getExternalFile(Objects.requireNonNull(file.getSingle(event)));
+            FileConfiguration configuration = board.getStorage().loadExternalConfigWithFile(configFile);
             List<String> lines = new ArrayList<>();
             if(configuration.contains("scoreboard.lines")) {
                 lines = configuration.getStringList("scoreboard.lines");
@@ -54,8 +55,8 @@ public class EffAddLineWithoutName extends Effect {
             configuration.set("scoreboard.lines",lines);
             configuration.save(configFile);
         }catch (Throwable throwable) {
-            PixelSkScoreboard.getControl().getLogs().error("Can't execute &cEffAddLineWithoutName.class &7error code: 281 &8(Probably is an issue created in your script)");
-            PixelSkScoreboard.getControl().getLogs().error(throwable);
+            board.getLogs().error("Can't execute &cEffAddLineWithoutName.class &7error code: 281 &8(Probably is an issue created in your script)");
+            board.getLogs().error(throwable);
         }
     }
 }
