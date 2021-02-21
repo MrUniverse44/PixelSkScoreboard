@@ -1,7 +1,7 @@
 package dev.mruniverse.pixelskscoreboard.effects;
 
-import ch.njol.skript.lang.Effect;
 import ch.njol.skript.Skript;
+import ch.njol.skript.lang.Effect;
 import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.SkriptParser;
 import ch.njol.util.Kleenean;
@@ -17,28 +17,23 @@ import java.util.List;
 import java.util.Objects;
 
 @SuppressWarnings("unused")
-public class EffAddLine extends Effect {
+public class EffAddLineWithoutName extends Effect {
     private Expression<String> line;
     private Expression<String> file;
-    private Expression<String> name;
 
     static {
-        Skript.registerEffect(EffAddLine.class, "add [skscoreboard |pixelboard |skboard ]line %string% to scoreboard (in|of) file %string% named %string%");
+        Skript.registerEffect(EffAddLineWithoutName.class, "add [skscoreboard |pixelboard |skboard ]line %string% to scoreboard (in|of) file %string%");
     }
 
     @SuppressWarnings("unchecked")
     public boolean init(Expression<?> @NotNull [] expressions, int matchedPattern, @NotNull Kleenean isDelayed, SkriptParser.@NotNull ParseResult parser) {
         line = (Expression<String>)expressions[0];
         file = (Expression<String>)expressions[1];
-        name = (Expression<String>) expressions[2];
         return true;
     }
 
     public @NotNull String toString(@Nullable Event event, boolean debug) {
-        if(name != null) {
-            return "SkScoreboard add line " + line.toString(event, debug) + " to scoreboard in file " + file.toString(event, debug) + " named " + name.toString(event,debug);
-        }
-        return "SkScoreboard add line " + line.toString(event, debug) + " to scoreboard in file " + file.toString(event, debug);
+        return "add skboard line " + line.toString(event, debug) + " to scoreboard in file " + file.toString(event, debug);
     }
 
     protected void execute(@NotNull Event event) {
@@ -52,16 +47,14 @@ public class EffAddLine extends Effect {
             File configFile = PixelSkScoreboard.getControl().getStorage().getExternalFile(Objects.requireNonNull(file.getSingle(event)));
             FileConfiguration configuration = PixelSkScoreboard.getControl().getStorage().loadExternalConfigWithFile(configFile);
             List<String> lines = new ArrayList<>();
-            if(name == null || name.getSingle(event) == null) {
-                if (configuration.contains("scoreboard.lines")) {
-                    lines = configuration.getStringList("scoreboard.lines");
-                }
-                lines.add(lineToAdd.replace("§", "&"));
-                configuration.set("scoreboard.lines", lines);
+            if(configuration.contains("scoreboard.lines")) {
+                lines = configuration.getStringList("scoreboard.lines");
             }
+            lines.add(lineToAdd.replace("§","&"));
+            configuration.set("scoreboard.lines",lines);
             configuration.save(configFile);
         }catch (Throwable throwable) {
-            PixelSkScoreboard.getControl().getLogs().error("Can't execute &cEffAddLine.class &7error code: 281 &8(Probably is an issue created in your script)");
+            PixelSkScoreboard.getControl().getLogs().error("Can't execute &cEffAddLineWithoutName.class &7error code: 281 &8(Probably is an issue created in your script)");
             PixelSkScoreboard.getControl().getLogs().error(throwable);
         }
     }
