@@ -52,6 +52,51 @@ public class FileStorage {
         return cnf;
     }
     /**
+     * Get External Fle Control,
+     * reloads if specified file exists.
+     *
+     * @param fileLocation config to get/create.
+     */
+    public File getExternalFile(String fileLocation) {
+        String[] config = fileLocation.split("/");
+        String file = config[config.length - 1];
+        String pre = fileLocation.replace(file, "");
+        File configFile;
+        if(pre.equals(""))  {
+            configFile = new File(getServerFolder(),file);
+        } else {
+            configFile = new File(pre,file);
+        }
+        if (!configFile.exists()) {
+            try {
+                boolean create = configFile.createNewFile();
+                if(create) plugin.getLogs().debug("File &3" + file + " &7created.");
+            } catch (Throwable throwable) {
+                plugin.getLogs().error("Can't create file: " + file);
+                plugin.getLogs().error(throwable);
+            }
+        }
+        return configFile;
+    }
+    /**
+     * Creates a config File if it doesn't exists,
+     * reloads if specified file exists.
+     *
+     * @param file config to control/reload.
+     */
+    public FileConfiguration loadExternalConfigWithFile(File file) {
+        FileConfiguration cnf = null;
+        try {
+            cnf = YamlConfiguration.loadConfiguration(file);
+        } catch (Throwable throwable) {
+            plugin.getLogs().error("Can't load your config: " + file.getName());
+            plugin.getLogs().error(throwable);
+        }
+
+        plugin.getLogs().info(String.format("&7File &e%s.yml &7has been loaded", file.getName()));
+        return cnf;
+    }
+    /**
      * Creates a config File if it doesn't exists,
      * reloads if specified file exists.
      *

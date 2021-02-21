@@ -11,6 +11,7 @@ import org.bukkit.event.Event;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -52,7 +53,8 @@ public class EffAddLine extends Effect {
         try {
             String lineToAdd = line.getSingle(event);
             if(lineToAdd == null) lineToAdd = "";
-            FileConfiguration configuration = PixelSkScoreboard.getControl().getStorage().loadExternalConfig(Objects.requireNonNull(file.getSingle(event)));
+            File configFile = PixelSkScoreboard.getControl().getStorage().getExternalFile(Objects.requireNonNull(file.getSingle(event)));
+            FileConfiguration configuration = PixelSkScoreboard.getControl().getStorage().loadExternalConfigWithFile(configFile);
             List<String> lines = new ArrayList<>();
             if(name == null || name.getSingle(event) == null) {
                 if(configuration.contains("scoreboard.lines")) {
@@ -69,9 +71,9 @@ public class EffAddLine extends Effect {
                 lines.add(lineToAdd.replace("§","&"));
                 configuration.set("scoreboards." + path + ".lines",lines);
             }
-            PixelSkScoreboard.getControl().getStorage().saveExternal(Objects.requireNonNull(file.getSingle(event)));
+            configuration.save(configFile);
         }catch (Throwable throwable) {
-            PixelSkScoreboard.getControl().getLogs().error("Can't execute &cEffAddLine.class &7error code: 281");
+            PixelSkScoreboard.getControl().getLogs().error("Can't execute &cEffAddLine.class &7error code: 281 &8(Probably is an issue created in your script)");
             PixelSkScoreboard.getControl().getLogs().error(throwable);
         }
     }
