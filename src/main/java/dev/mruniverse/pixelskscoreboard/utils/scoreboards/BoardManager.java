@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 
+@SuppressWarnings("unused")
 public class BoardManager {
     private final HashMap<UUID, PlayerManager> players = new HashMap<>();
 

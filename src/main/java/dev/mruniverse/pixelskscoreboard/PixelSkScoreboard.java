@@ -9,6 +9,7 @@ import dev.mruniverse.pixelskscoreboard.utils.Updater;
 import dev.mruniverse.pixelskscoreboard.utils.scoreboards.BoardManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
+@SuppressWarnings("unused")
 public final class PixelSkScoreboard extends JavaPlugin {
     private Logger logger;
     private FileStorage fileStorage;
