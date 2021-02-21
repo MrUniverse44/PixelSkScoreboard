@@ -51,15 +51,16 @@ public class EffAddLine extends Effect {
             if(lineToAdd == null) lineToAdd = "";
             File configFile = PixelSkScoreboard.getControl().getStorage().getExternalFile(Objects.requireNonNull(file.getSingle(event)));
             FileConfiguration configuration = PixelSkScoreboard.getControl().getStorage().loadExternalConfigWithFile(configFile);
+            if(configFile == null) return;
+            if(configuration == null) return;
             List<String> lines = new ArrayList<>();
-            if(name == null || name.getSingle(event) == null) {
-                if (configuration.contains("scoreboard.lines")) {
-                    lines = configuration.getStringList("scoreboard.lines");
-                }
-                lines.add(lineToAdd.replace("§", "&"));
-                configuration.set("scoreboard.lines", lines);
+            if (configuration.contains("scoreboard.lines")) {
+                lines = configuration.getStringList("scoreboard.lines");
             }
+            lines.add(lineToAdd.replace("§", "&"));
+            configuration.set("scoreboard.lines", lines);
             configuration.save(configFile);
+            PixelSkScoreboard.getControl().getLogs().debug("Line: '" + lineToAdd + "&7' added to scoreboard named '" + name + "' in '" + file.getSingle(event) + "'");
         }catch (Throwable throwable) {
             PixelSkScoreboard.getControl().getLogs().error("Can't execute &cEffAddLine.class &7error code: 281 &8(Probably is an issue created in your script)");
             PixelSkScoreboard.getControl().getLogs().error(throwable);

@@ -85,16 +85,14 @@ public class FileStorage {
      * @param file config to control/reload.
      */
     public FileConfiguration loadExternalConfigWithFile(File file) {
-        FileConfiguration cnf = null;
         try {
-            cnf = YamlConfiguration.loadConfiguration(file);
+            plugin.getLogs().info(String.format("&7File &e%s &7has been loaded &8(FC)", file.getName()));
+            return YamlConfiguration.loadConfiguration(file);
         } catch (Throwable throwable) {
             plugin.getLogs().error("Can't load your config: " + file.getName());
             plugin.getLogs().error(throwable);
         }
-
-        plugin.getLogs().info(String.format("&7File &e%s &7has been loaded", file.getName()));
-        return cnf;
+        return null;
     }
     /**
      * Creates a config File if it doesn't exists,
