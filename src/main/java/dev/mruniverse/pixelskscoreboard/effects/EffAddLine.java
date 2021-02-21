@@ -44,26 +44,31 @@ public class EffAddLine extends Effect {
     protected void execute(@NotNull Event event) {
         if (line == null) return;
         if (file == null) return;
+        if (name == null) return;
         if (line.getSingle(event) == null) return;
         if (file.getSingle(event) == null) return;
+        if (name.getSingle(event) == null) return;
+        PixelSkScoreboard board = PixelSkScoreboard.getControl();
         try {
             String lineToAdd = line.getSingle(event);
             if(lineToAdd == null) lineToAdd = "";
-            File configFile = PixelSkScoreboard.getControl().getStorage().getExternalFile(Objects.requireNonNull(file.getSingle(event)));
-            FileConfiguration configuration = PixelSkScoreboard.getControl().getStorage().loadExternalConfigWithFile(configFile);
+            File configFile = board.getStorage().getExternalFile(Objects.requireNonNull(file.getSingle(event)));
+            FileConfiguration configuration = board.getStorage().loadExternalConfigWithFile(configFile);
+            String nm = name.getSingle(event);
+            if(nm == null) nm = "Unknown";
             if(configFile == null) return;
             if(configuration == null) return;
             List<String> lines = new ArrayList<>();
-            if (configuration.contains("scoreboard.lines")) {
-                lines = configuration.getStringList("scoreboard.lines");
+            if (configuration.contains("scoreboards." + nm + ".lines")) {
+                lines = configuration.getStringList("scoreboards." + nm + ".lines");
             }
             lines.add(lineToAdd.replace("§", "&"));
-            configuration.set("scoreboard.lines", lines);
+            configuration.set("scoreboards." + nm + ".lines", lines);
             configuration.save(configFile);
-            PixelSkScoreboard.getControl().getLogs().debug("Line: '" + lineToAdd + "&7' added to scoreboard named '" + name + "' in '" + file.getSingle(event) + "'");
+            board.getLogs().debug("Line: '" + lineToAdd + "&7' added to scoreboard named '" + name + "' in '" + file.getSingle(event) + "'");
         }catch (Throwable throwable) {
-            PixelSkScoreboard.getControl().getLogs().error("Can't execute &cEffAddLine.class &7error code: 281 &8(Probably is an issue created in your script)");
-            PixelSkScoreboard.getControl().getLogs().error(throwable);
+            board.getLogs().error("Can't execute &cEffAddLine.class &7error code: 281 &8(Probably is an issue created in your script)");
+            board.getLogs().error(throwable);
         }
     }
 }

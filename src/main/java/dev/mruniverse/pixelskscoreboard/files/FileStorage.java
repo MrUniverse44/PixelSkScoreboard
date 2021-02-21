@@ -57,6 +57,7 @@ public class FileStorage {
      *
      * @param fileLocation config to get/create.
      */
+    @SuppressWarnings("ResultOfMethodCallIgnored")
     public File getExternalFile(String fileLocation) {
         String[] config = fileLocation.split("/");
         String file = config[config.length - 1];
@@ -69,8 +70,7 @@ public class FileStorage {
         }
         if (!configFile.exists()) {
             try {
-                boolean create = configFile.createNewFile();
-                if(create) plugin.getLogs().debug("File &3" + file + " &7created.");
+                configFile.createNewFile();
             } catch (Throwable throwable) {
                 plugin.getLogs().error("Can't create file: " + file);
                 plugin.getLogs().error(throwable);
