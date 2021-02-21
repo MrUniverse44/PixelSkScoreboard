@@ -93,7 +93,7 @@ public class FileStorage {
             plugin.getLogs().error(throwable);
         }
 
-        plugin.getLogs().info(String.format("&7File &e%s.yml &7has been loaded", file.getName()));
+        plugin.getLogs().info(String.format("&7File &e%s &7has been loaded", file.getName()));
         return cnf;
     }
     /**
@@ -110,7 +110,9 @@ public class FileStorage {
         if(pre.equals(""))  {
             configFile = new File(getServerFolder(),file);
         } else {
-            configFile = new File(pre,file);
+            pre = pre.replace("[serverDir]/","");
+            File preTwo = new File(getServerFolder() + pre);
+            configFile = new File(preTwo,file);
         }
 
         if (!configFile.exists()) {
@@ -122,17 +124,14 @@ public class FileStorage {
                 plugin.getLogs().error(throwable);
             }
         }
-
-        FileConfiguration cnf = null;
         try {
-            cnf = YamlConfiguration.loadConfiguration(configFile);
+            plugin.getLogs().info(String.format("&7File &e%s.yml &7has been loaded correctly", configName));
+            return YamlConfiguration.loadConfiguration(configFile);
         } catch (Throwable throwable) {
             plugin.getLogs().error("Can't load your config: " + configName);
             plugin.getLogs().error(throwable);
         }
-
-        plugin.getLogs().info(String.format("&7File &e%s.yml &7has been loaded", configName));
-        return cnf;
+        return null;
     }
     /**
      * Save config File Changes & Paths

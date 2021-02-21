@@ -23,7 +23,7 @@ public class Updater {
             StringBuilder sb = new StringBuilder();
             String line;
             while ((line = br.readLine()) != null) {
-                sb.append(line).append("\n");
+                sb.append(line);
             }
             br.close();
             newestVersion = sb.toString();
