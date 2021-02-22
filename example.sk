@@ -37,6 +37,7 @@ command /board [<text>] [<text>]:
 		if arg 1 is not set:
 			send "&b/board show (with|without)"
 			send "&b/board hide"
+			send "&b/board toggle-example-flicker"
 		if arg 1 is "show":
 			if arg 2 is "with":
 				send scoreboard of file "plugins/PluginName/withName.yml" named "ShowCase1" to player
