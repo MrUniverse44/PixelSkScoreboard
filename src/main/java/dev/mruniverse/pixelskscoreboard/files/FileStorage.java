@@ -71,10 +71,7 @@ public class FileStorage {
         if (!configFile.exists()) {
             try {
                 configFile.createNewFile();
-            } catch (Throwable throwable) {
-                plugin.getLogs().error("Can't create file: " + file);
-                plugin.getLogs().error(throwable);
-            }
+            } catch (Throwable ignored) {}
         }
         return configFile;
     }
