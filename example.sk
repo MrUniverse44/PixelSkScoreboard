@@ -1,0 +1,54 @@
+# This example needs PlaceholderAPI depend
+on load:
+	if skscoreboard named "ShowCase1" of file "plugins/PluginName/withName.yml" is not created:
+		set title "&eWith Name" of scoreboard in file "plugins/PluginName/withName.yml" named "ShowCase1"
+		add line " " to scoreboard of file "plugins/PluginName/withName.yml" named "ShowCase1"
+		add line "&fWith Name board" to scoreboard of file "plugins/PluginName/withName.yml" named "ShowCase1"
+		add line " " to scoreboard of file "plugins/PluginName/withName.yml" named "ShowCase1"
+		add line "&erigox.club" to scoreboard of file "plugins/PluginName/withName.yml" named "ShowCase1"
+		send "&f[&eShowCase &f| SkScoreboard] &7Scoreboard with name created & loaded." to console
+	else:
+		send "&f[&eShowCase &f| SkScoreboard] &7Scoreboard with name loaded." to console
+	if skscoreboard of file "plugins/PluginName/withoutName.yml" is not created:
+		set title "&eWithout Name" of scoreboard in file "plugins/PluginName/withoutName.yml"
+		add line " " to scoreboard of file "plugins/PluginName/withoutName.yml"
+		add line "&fWithout Name board" to scoreboard of file "plugins/PluginName/withoutName.yml"
+		add line " " to scoreboard of file "plugins/PluginName/withoutName.yml"
+		add line "&erigox.club" to scoreboard of file "plugins/PluginName/withoutName.yml"
+		send "&f[&eShowCase &f| SkScoreboard] &7Scoreboard without name created & loaded." to console
+	else:
+		send "&f[&eShowCase &f| SkScoreboard] &7Scoreboard without name loaded." to console
+	if skscoreboard of file "plugins/SkScoreboard/flicker.yml" is not created:
+		set title "&b&lFLICKER DEMO" of scoreboard in file "plugins/SkScoreboard/flicker.yml"
+		add line " " to scoreboard of file "plugins/SkScoreboard/flicker.yml"
+		add line "&3%%player_x%%,%%player_y%%,%%player_z%%" to scoreboard of file "plugins/SkScoreboard/flicker.yml"
+		add line " " to scoreboard of file "plugins/SkScoreboard/flicker.yml"
+		add line "&erigox.club" to scoreboard of file "plugins/SkScoreboard/flicker.yml"
+		send "&f[&eShowCase &f| SkScoreboard] &7Scoreboard example created & loaded." to console
+	else:
+		send "&f[&eShowCase &f| SkScoreboard] &7Scoreboard example loaded." to console
+
+every second:
+	if {skscoreboard.flicker} is set:
+		loop all players:
+			send scoreboard of file "plugins/SkScoreboard/flicker.yml" to loop-player
+
+command /board [<text>] [<text>]:
+	trigger:
+		if arg 1 is not set:
+			send "&b/board show (with|without)"
+			send "&b/board hide"
+		if arg 1 is "show":
+			if arg 2 is "with":
+				send scoreboard of file "plugins/PluginName/withName.yml" named "ShowCase1" to player
+				send "&aShowing with name."
+			if arg 2 is "without":
+				send scoreboard of file "plugins/PluginName/withoutName.yml" to player
+				send "&aShowing without name."
+		if arg 1 is "toggle-example-flicker":
+			set {skscoreboard.flicker} to true
+			wait 10 seconds
+			set {skscoreboard.flicker} to false
+		if arg 1 is "hide":
+			hide scoreboard of player
+			send "&aScoreboard hidden"
