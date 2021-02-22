@@ -5,6 +5,7 @@ import ch.njol.skript.SkriptAddon;
 import dev.mruniverse.pixelskscoreboard.files.FileStorage;
 import dev.mruniverse.pixelskscoreboard.listeners.PlayerListener;
 import dev.mruniverse.pixelskscoreboard.utils.Logger;
+import dev.mruniverse.pixelskscoreboard.utils.Metrics;
 import dev.mruniverse.pixelskscoreboard.utils.Updater;
 import dev.mruniverse.pixelskscoreboard.utils.scoreboards.BoardManager;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -25,6 +26,8 @@ public final class PixelSkScoreboard extends JavaPlugin {
         fileStorage = new FileStorage(this);
         instance = this;
         addon = Skript.registerAddon(this);
+        int pluginId = 10436;
+        Metrics metrics = new Metrics(this, pluginId);
         getServer().getPluginManager().registerEvents(playerListener,this);
         boardManager = new BoardManager();
         try {
