@@ -1,4 +1,3 @@
-# This example needs PlaceholderAPI depend
 on load:
 	if skscoreboard named "ShowCase1" of file "plugins/PluginName/withName.yml" is not created:
 		set title "&eWith Name" of scoreboard in file "plugins/PluginName/withName.yml" named "ShowCase1"
@@ -46,9 +45,14 @@ command /board [<text>] [<text>]:
 				send scoreboard of file "plugins/PluginName/withoutName.yml" to player
 				send "&aShowing without name."
 		if arg 1 is "toggle-example-flicker":
-			set {skscoreboard.flicker} to true
-			wait 10 seconds
-			set {skscoreboard.flicker} to false
+			if {skscoreboard.flicker} is not set:
+				set {skscoreboard.flicker} to true
+				send "&aToggled Example flicker for 10 seconds"
+				wait 10 seconds
+				delete {skscoreboard.flicker}
+			else:
+				delete {skscoreboard.flicker}
+				send "&aScoreboard OFF"
 		if arg 1 is "hide":
 			hide scoreboard of player
 			send "&aScoreboard hidden"
