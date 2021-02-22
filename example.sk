@@ -51,6 +51,8 @@ command /board [<text>] [<text>]:
 				send "&aToggled Example flicker for 10 seconds"
 				wait 10 seconds
 				delete {skscoreboard.flicker}
+				loop all players:
+					hide scoreboard of loop-player
 			else:
 				delete {skscoreboard.flicker}
 				send "&aScoreboard OFF"
