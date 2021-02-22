@@ -15,6 +15,13 @@ public class BoardManager {
         return players.get(player.getUniqueId());
     }
 
+    public PlayerManager getToAdd(Player player) {
+        if(!existPlayer(player)) {
+            players.put(player.getUniqueId(), new PlayerManager(player));
+        }
+        return players.get(player.getUniqueId());
+    }
+
     public void removeScore(Player player) {
         players.remove(player.getUniqueId());
     }

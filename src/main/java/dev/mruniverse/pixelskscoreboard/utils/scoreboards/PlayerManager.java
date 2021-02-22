@@ -1,5 +1,7 @@
 package dev.mruniverse.pixelskscoreboard.utils.scoreboards;
 
+import dev.mruniverse.pixelskscoreboard.PixelSkScoreboard;
+import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -14,10 +16,11 @@ import java.util.List;
 public class PlayerManager {
     private Scoreboard scoreboard;
     private Objective sidebar;
-
+    private Player player;
     public PlayerManager(Player player) {
         if(Bukkit.getScoreboardManager() == null) return;
         this.scoreboard = Bukkit.getScoreboardManager().getNewScoreboard();
+        this.player = player;
         this.sidebar = this.scoreboard.registerNewObjective("sidebar", "dummy");
         this.sidebar.setDisplaySlot(DisplaySlot.SIDEBAR);
         for (int i = 1; i <= 15; i++) {
@@ -29,8 +32,17 @@ public class PlayerManager {
     }
 
     public void setTitle(String title) {
-        title = ChatColor.translateAlternateColorCodes('&', title);
+        PixelSkScoreboard board = PixelSkScoreboard.getControl();
+        if(board.hasPAPI()) {
+            title = PlaceholderAPI.setPlaceholders(player,ChatColor.translateAlternateColorCodes('&', title));
+        } else {
+            title = ChatColor.translateAlternateColorCodes('&', title);
+        }
         this.sidebar.setDisplayName((title.length() > 32) ? title.substring(0, 32) : title);
+    }
+
+    public Scoreboard getScoreboard() {
+        return scoreboard;
     }
 
     public void setSlot(int slot, String text) {
@@ -39,7 +51,12 @@ public class PlayerManager {
         String entry = genEntry(slot);
         if (!this.scoreboard.getEntries().contains(entry))
             this.sidebar.getScore(entry).setScore(slot);
-        text = ChatColor.translateAlternateColorCodes('&', text);
+        PixelSkScoreboard board = PixelSkScoreboard.getControl();
+        if(board.hasPAPI()) {
+            text = PlaceholderAPI.setPlaceholders(player,ChatColor.translateAlternateColorCodes('&', text));
+        } else {
+            text = ChatColor.translateAlternateColorCodes('&', text);
+        }
         String pre = getFirstSplit(text);
         String suf = getFirstSplit(ChatColor.getLastColors(pre) + getSecondSplit(text));
         team.setPrefix(pre);
@@ -59,8 +76,13 @@ public class PlayerManager {
         if (slot < 15)
             for (int i = slot + 1; i <= 15; i++)
                 removeSlot(i);
+        PixelSkScoreboard board = PixelSkScoreboard.getControl();
         for (String line : list) {
-            line = ChatColor.translateAlternateColorCodes('&',line);
+            if(board.hasPAPI()) {
+                line = PlaceholderAPI.setPlaceholders(player,ChatColor.translateAlternateColorCodes('&', line));
+            } else {
+                line = ChatColor.translateAlternateColorCodes('&', line);
+            }
             setSlot(slot, line);
             slot--;
         }
