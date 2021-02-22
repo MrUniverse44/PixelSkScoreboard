@@ -86,7 +86,7 @@ public class FileStorage {
      */
     public FileConfiguration loadExternalConfigWithFile(File file) {
         try {
-            plugin.getLogs().info(String.format("&7File &e%s &7has been loaded &8(FC)", file.getName()));
+            plugin.getLogs().debug(String.format("&7File &e%s &7has been loaded &8(FC)", file.getName()));
             return YamlConfiguration.loadConfiguration(file);
         } catch (Throwable throwable) {
             plugin.getLogs().error("Can't load your config: " + file.getName());
@@ -123,7 +123,7 @@ public class FileStorage {
             }
         }
         try {
-            plugin.getLogs().info(String.format("&7File &e%s.yml &7has been loaded correctly", configName));
+            plugin.getLogs().debug(String.format("&7File &e%s.yml &7has been loaded correctly", configName));
             return YamlConfiguration.loadConfiguration(configFile);
         } catch (Throwable throwable) {
             plugin.getLogs().error("Can't load your config: " + configName);
