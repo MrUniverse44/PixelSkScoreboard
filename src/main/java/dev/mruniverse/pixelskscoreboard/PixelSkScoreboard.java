@@ -31,12 +31,13 @@ public final class PixelSkScoreboard extends JavaPlugin {
         getServer().getPluginManager().registerEvents(playerListener,this);
         boardManager = new BoardManager();
         try {
-            String[] subPackages = new String[] { "effects", "conditions" };
+            String[] subPackages = new String[] { "effects", "conditions","expressions" };
             addon.loadClasses("dev.mruniverse.pixelskscoreboard", subPackages);
             getLogs().info("Effects & conditions loaded correctly.");
         }catch (Throwable throwable) {
             getLogs().error("Can't load effects & conditions.");
             getLogs().error(throwable);
+
         }
 
         if(getStorage().getSettings().getBoolean("settings.update-check")) {
