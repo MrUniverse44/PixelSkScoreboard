@@ -1,10 +1,10 @@
 package dev.mruniverse.pixelskscoreboard.expressions;
 
 import ch.njol.skript.Skript;
-import ch.njol.skript.expressions.base.PropertyExpression;
 import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.ExpressionType;
 import ch.njol.skript.lang.SkriptParser;
+import ch.njol.skript.lang.util.SimpleExpression;
 import ch.njol.util.Kleenean;
 import org.bukkit.event.Event;
 import org.jetbrains.annotations.NotNull;
@@ -12,14 +12,13 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Map;
 @SuppressWarnings("unused")
-public class ExprTop extends PropertyExpression<String,String> {
+public class ExprTop extends SimpleExpression<String> {
     private Expression<Integer> number;
     private Expression<Map<Object,Object>> objects;
     private Expression<String> format;
 
     static {
-        Skript.registerExpression(ExprTop.class, String.class, ExpressionType.COMBINED,
-                "top %integer% values of %objects% formatted as %string%");
+        Skript.registerExpression(ExprTop.class, String.class, ExpressionType.SIMPLE, "top %integer% values of %objects% formatted as %string%");
     }
 
     @Override
@@ -44,7 +43,7 @@ public class ExprTop extends PropertyExpression<String,String> {
     }
 
     @Override
-    protected String @NotNull [] get(@NotNull Event event, String @NotNull [] source) {
+    protected String @NotNull [] get(@NotNull Event event) {
         try {
             int line = 1;
             Map<Object,Object> check = objects.getSingle(event);
@@ -61,5 +60,10 @@ public class ExprTop extends PropertyExpression<String,String> {
             return returnal;
         } catch (Throwable ignored) {}
         return new String[0];
+    }
+
+    @Override
+    public boolean isSingle() {
+        return true;
     }
 }
