@@ -32,12 +32,31 @@ every second:
 		loop all players:
 			send scoreboard of file "plugins/SkScoreboard/flicker.yml" to loop-player
 
-command /board [<text>] [<text>]:
+command /board [<text>] [<text>] [<text>]:
 	trigger:
 		if arg 1 is not set:
 			send "&b/board show (with|without)"
+			send "&b/board set-slot (slot) (text)"
+			send "&b/board set-title (text)"
 			send "&b/board hide"
 			send "&b/board toggle-example-flicker"
+		if arg 1 is "set-slot":
+			if arg 2 is set:
+		    	if arg 3 is set:
+					set pixel slot (arg-2 parsed as integer) of scoreboard of player to arg-3
+					send "&aDone!"
+		if arg 1 is "set-title":
+			if arg 2 is set:
+	    		set pixel title of scoreboard of player to arg-2
+				send "&aDone!"
+		if arg 1 is "set-lines":
+			add "a 1" to {_lines::*}
+			add "b 2" to {_lines::*}
+			add "c 3" to {_lines::*}
+			add "PlaceholderAPI: " to {_lines::*}
+			add "%%player_name%%" to {_lines::*}
+			set pixel lines of scoreboard of player to {_lines::*}
+			send "&aDone!"
 		if arg 1 is "show":
 			if arg 2 is "with":
 				send scoreboard of file "plugins/PluginName/withName.yml" named "ShowCase1" to player
