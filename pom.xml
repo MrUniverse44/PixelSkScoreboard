@@ -6,7 +6,7 @@
 
     <groupId>dev.mruniverse.pixelskscoreboard</groupId>
     <artifactId>PixelSkScoreboard</artifactId>
-    <version>1.2.0-SNAPSHOT</version>
+    <version>1.3.0-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <name>PixelSkScoreboard</name>
@@ -75,6 +75,18 @@
             <id>placeholderapi</id>
             <url>https://repo.extendedclip.com/content/repositories/placeholderapi/</url>
         </repository>
+        <repository>
+            <id>phoenix</id>
+            <url>https://repo.phoenix616.dev/</url>
+        </repository>
+        <repository>
+            <id>papermc</id>
+            <url>https://papermc.io/repo/repository/maven-public/</url>
+        </repository>
+        <repository>
+            <id>aikar</id>
+            <url>https://ci.emc.gs/nexus/content/groups/aikar/</url>
+        </repository>
     </repositories>
 
     <dependencies>
@@ -99,6 +111,11 @@
             <groupId>com.github.SkriptLang</groupId>
             <artifactId>Skript</artifactId>
             <version>dev37c</version>
+        </dependency>
+        <dependency>
+            <groupId>net.milkbowl.vault</groupId>
+            <artifactId>Vault</artifactId>
+            <version>1.6.6</version>
         </dependency>
     </dependencies>
 </project>
