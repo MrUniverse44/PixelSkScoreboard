@@ -1,24 +1,24 @@
 package dev.mruniverse.pixelskscoreboard.effects;
 
+
 import ch.njol.skript.Skript;
 import ch.njol.skript.lang.Effect;
 import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.SkriptParser;
 import ch.njol.util.Kleenean;
 import dev.mruniverse.pixelskscoreboard.PixelSkScoreboard;
-import dev.mruniverse.pixelskscoreboard.utils.scoreboards.PlayerManager;
+import dev.mruniverse.pixelskscoreboard.netherboard.BPlayerBoard;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
-import org.bukkit.scoreboard.DisplaySlot;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 @SuppressWarnings("unused")
-public class EffHideBoard extends Effect {
+public class EffHidePacketBoard extends Effect {
     private Expression<Player> player;
 
     static {
-        Skript.registerEffect(EffHideBoard.class, "(hide|delete) [skscoreboard |pixelboard |skboard ]scoreboard (of|for) %players%");
+        Skript.registerEffect(EffHidePacketBoard.class, "(hide|delete) [skscoreboard |pixelboard |skboard ]scoreboard (of|for) %players% (with|using) packets");
     }
 
     @SuppressWarnings("unchecked")
@@ -28,7 +28,7 @@ public class EffHideBoard extends Effect {
     }
 
     public @NotNull String toString(@Nullable Event event, boolean debug) {
-        return "hide pixelboard scoreboard of " + player.toString(event,debug);
+        return "hide pixelboard scoreboard of " + player.toString(event,debug) + " using packets";
     }
 
     protected void execute(@NotNull Event event) {
@@ -36,14 +36,11 @@ public class EffHideBoard extends Effect {
         PixelSkScoreboard board = PixelSkScoreboard.getControl();
         try {
             for(Player p : player.getAll(event)) {
-                PlayerManager manager = board.getScoreboards().getToAdd(p);
-                if(p.getScoreboard() == manager.getScoreboard()) {
-                    p.getScoreboard().clearSlot(DisplaySlot.SIDEBAR);
-                }
-                board.getScoreboards().removeScore(p);
+                BPlayerBoard manager = board.getPacketScoreboards().getToAdd(p);
+                manager.delete();
             }
         }catch (Throwable throwable) {
-            board.getLogs().error("Can't execute &cEffHideBoard.class &7error code: 281 &8(Probably is an issue created in your script)");
+            board.getLogs().error("Can't execute &cEffHidePacketBoard.class &7error code: 281 &8(Probably is an issue created in your script)");
             board.getLogs().error(throwable);
         }
     }
