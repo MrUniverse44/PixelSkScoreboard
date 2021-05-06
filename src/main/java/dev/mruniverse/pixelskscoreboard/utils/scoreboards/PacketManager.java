@@ -17,6 +17,13 @@ public class PacketManager {
         return players.get(player.getUniqueId());
     }
 
+    public BPlayerBoard getToAdd(Player player) {
+        if(!existPlayer(player)) {
+            players.put(player.getUniqueId(), netherboard.createBoard(player,"guardianBoard"));
+        }
+        return players.get(player.getUniqueId());
+    }
+
     public void removeScore(Player player) {
         players.remove(player.getUniqueId());
     }
@@ -35,7 +42,6 @@ public class PacketManager {
         BPlayerBoard scoreboard = getBoardOfPlayer(player);
         String[] array = new String[lines.size()];
         lines.toArray(array);
-        scoreboard.setAll(array);
         scoreboard.setAll(array);
     }
     public void setSlot(Player player,int slot,String text){
