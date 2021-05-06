@@ -8,6 +8,7 @@ import dev.mruniverse.pixelskscoreboard.utils.Logger;
 import dev.mruniverse.pixelskscoreboard.utils.Metrics;
 import dev.mruniverse.pixelskscoreboard.utils.Updater;
 import dev.mruniverse.pixelskscoreboard.utils.scoreboards.BoardManager;
+import dev.mruniverse.pixelskscoreboard.utils.scoreboards.PacketManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 @SuppressWarnings("unused")
@@ -16,6 +17,7 @@ public final class PixelSkScoreboard extends JavaPlugin {
     private FileStorage fileStorage;
     private SkriptAddon addon;
     private BoardManager boardManager;
+    private PacketManager packetManager;
     private PlayerListener playerListener;
     private static PixelSkScoreboard instance;
     private boolean hasNew = false;
@@ -30,6 +32,7 @@ public final class PixelSkScoreboard extends JavaPlugin {
         Metrics metrics = new Metrics(this, pluginId);
         getServer().getPluginManager().registerEvents(playerListener,this);
         boardManager = new BoardManager();
+        packetManager = new PacketManager();
         try {
             String[] subPackages = new String[] { "effects", "conditions","expressions" };
             addon.loadClasses("dev.mruniverse.pixelskscoreboard", subPackages);
@@ -133,6 +136,13 @@ public final class PixelSkScoreboard extends JavaPlugin {
      */
     public SkriptAddon getSkript() {
         return addon;
+    }
+    /**
+     * Public getPacketScoreboards() from Plugin's Main class.
+     * @return PacketManager
+     */
+    public PacketManager getPacketScoreboards() {
+        return packetManager;
     }
     /**
      * Public getScoreboards() from Plugin's Main class.
