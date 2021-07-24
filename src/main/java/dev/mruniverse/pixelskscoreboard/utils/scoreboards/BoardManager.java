@@ -34,6 +34,7 @@ public class BoardManager {
         title = ChatColor.translateAlternateColorCodes('&',title);
         scoreboard.setTitle(title);
     }
+
     public void setLines(Player player, List<String> lines){
         if(!existPlayer(player)) {
             players.put(player.getUniqueId(), new PlayerManager(player));
@@ -49,7 +50,7 @@ public class BoardManager {
         text = ChatColor.translateAlternateColorCodes('&',text);
         scoreboard.setSlot(slot,text);
     }
-    private boolean existPlayer(Player player) {
+    public boolean existPlayer(Player player) {
         return players.containsKey(player.getUniqueId());
     }
 

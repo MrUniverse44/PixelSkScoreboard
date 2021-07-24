@@ -65,7 +65,7 @@ public class PacketManager {
             players.remove(player.getUniqueId());
         }
     }
-    private boolean existPlayer(Player player) {
+    public boolean existPlayer(Player player) {
         return players.containsKey(player.getUniqueId());
     }
 

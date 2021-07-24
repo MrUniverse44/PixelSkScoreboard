@@ -75,8 +75,7 @@ public class BPlayerBoard implements PlayerBoard<String, Integer, String> {
 
     @Override
     public void set(String name, Integer score) {
-        if(this.deleted)
-            throw new IllegalStateException("The PlayerBoard is deleted!");
+        if(this.deleted) return;
 
         String oldName = this.lines.get(score);
 
@@ -111,8 +110,7 @@ public class BPlayerBoard implements PlayerBoard<String, Integer, String> {
 
     @Override
     public void setAll(String... lines) {
-        if(this.deleted)
-            throw new IllegalStateException("The PlayerBoard is deleted!");
+        if(this.deleted) return;
 
         for(int i = 0; i < lines.length; i++) {
             String line = lines[i];
@@ -249,8 +247,7 @@ public class BPlayerBoard implements PlayerBoard<String, Integer, String> {
 
     @Override
     public void remove(Integer score) {
-        if(this.deleted)
-            throw new IllegalStateException("The PlayerBoard is deleted!");
+        if(this.deleted) return;
 
         String name = this.lines.get(score);
 
@@ -284,8 +281,7 @@ public class BPlayerBoard implements PlayerBoard<String, Integer, String> {
 
     @Override
     public Map<Integer, String> getLines() {
-        if(this.deleted)
-            throw new IllegalStateException("The PlayerBoard is deleted!");
+        if(this.deleted) new HashMap<>();
 
         return new HashMap<>(lines);
     }
@@ -297,8 +293,7 @@ public class BPlayerBoard implements PlayerBoard<String, Integer, String> {
 
     @Override
     public void setName(String name) {
-        if(this.deleted)
-            throw new IllegalStateException("The PlayerBoard is deleted!");
+        if(this.deleted) return;
 
         this.name = name;
 
