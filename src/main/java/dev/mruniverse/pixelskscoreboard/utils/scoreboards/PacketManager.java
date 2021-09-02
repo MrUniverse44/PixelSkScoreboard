@@ -62,6 +62,8 @@ public class PacketManager {
     @SuppressWarnings("unused")
     public void deletePlayer(Player player) {
         if(existPlayer(player)) {
+            netherboard.removeBoard(player);
+            netherboard.deleteBoard(player);
             players.remove(player.getUniqueId());
         }
     }

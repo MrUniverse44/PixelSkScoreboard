@@ -38,6 +38,8 @@ public class EffHidePacketBoard extends Effect {
             for(Player p : player.getAll(event)) {
                 BPlayerBoard manager = board.getPacketScoreboards().getToAdd(p);
                 manager.delete();
+                board.getPacketScoreboards().deletePlayer(p);
+                board.getPacketScoreboards().removeScore(p);
             }
         }catch (Throwable throwable) {
             board.getLogs().error("Can't execute &cEffHidePacketBoard.class &7error code: 281 &8(Probably is an issue created in your script)");

@@ -1,6 +1,4 @@
 package dev.mruniverse.pixelskscoreboard.effects;
-// * set (skscoreboard|pixelSk|pixel) lines of [current ]scoreboard of %players% to %strings%
-
 
 import ch.njol.skript.Skript;
 import ch.njol.skript.lang.Effect;
@@ -14,44 +12,31 @@ import org.bukkit.event.Event;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
 @SuppressWarnings("unused")
-public class EffSetLinesWithoutFile extends Effect {
-    private Expression<String> lines;
+public class EffShowBoardWithoutFile extends Effect {
     private Expression<Player> player;
 
     static {
-        Skript.registerEffect(EffSetLinesWithoutFile.class, "set (skscoreboard|pixelSk|pixel) lines of [current ]scoreboard of %players% to %strings%");
+        Skript.registerEffect(EffShowBoardWithoutFile.class, "(send|show) [skscoreboard |pixelboard |skboard ]scoreboard (to|for) %players%");
     }
 
     @SuppressWarnings("unchecked")
     public boolean init(Expression<?> @NotNull [] expressions, int matchedPattern, @NotNull Kleenean isDelayed, SkriptParser.@NotNull ParseResult parser) {
         player = (Expression<Player>)expressions[0];
-        lines = (Expression<String>)expressions[1];
         return true;
     }
 
     public @NotNull String toString(@Nullable Event event, boolean debug) {
-        return "set (skscoreboard|pixelSk|pixel) lines of [current ]scoreboard of " + player.toString(event, debug) + " to " + lines.toString(event,debug);
+        return "send pixelboard scoreboard for " + player.toString(event,debug);
     }
 
     protected void execute(@NotNull Event event) {
-        if (lines == null) return;
         if (player == null) return;
-        if (lines.getSingle(event) == null) return;
         PixelSkScoreboard board = PixelSkScoreboard.getControl();
         try {
-            List<String> lines = new ArrayList<>(Arrays.asList(this.lines.getArray(event)));
-            for (Player player : this.player.getAll(event)) {
-                PlayerManager manager = board.getScoreboards().getToAdd(player);
-                manager.updateLines(lines);
-            }
-
+            board.getLogs().info("show skscoreboard for [player(s)] | is in maintenance.");
         }catch (Throwable throwable) {
-            board.getLogs().error("Can't execute &cEffSetLinesWithoutFile.class &7error code: 281 &8(Probably is an issue created in your script)");
+            board.getLogs().error("Can't execute &cEffShowBoard.class &7error code: 281 &8(Probably is an issue created in your script)");
             board.getLogs().error(throwable);
         }
     }

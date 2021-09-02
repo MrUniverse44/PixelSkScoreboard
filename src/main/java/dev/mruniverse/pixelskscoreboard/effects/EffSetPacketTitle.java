@@ -38,13 +38,12 @@ public class EffSetPacketTitle extends Effect {
         if (title == null) return;
         if (player == null) return;
         if (title.getSingle(event) == null) return;
-        if (player.getSingle(event) == null) return;
         PixelSkScoreboard board = PixelSkScoreboard.getControl();
         try {
             String titleToSet = title.getSingle(event);
             if(titleToSet == null) titleToSet = "";
             titleToSet = ChatColor.translateAlternateColorCodes('&',titleToSet);
-            for (Player player : this.player.getAll(event)) {
+            for(Player player : this.player.getAll(event)) {
                 BPlayerBoard manager = board.getPacketScoreboards().getToAdd(player);
                 manager.setName(titleToSet);
             }

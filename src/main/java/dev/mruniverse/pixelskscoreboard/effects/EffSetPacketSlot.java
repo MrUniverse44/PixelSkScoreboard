@@ -32,13 +32,12 @@ public class EffSetPacketSlot extends Effect {
     }
 
     public @NotNull String toString(@Nullable Event event, boolean debug) {
-        return "set (skscoreboard|pixelSk|pixel) slot %-number% of [current ]scoreboard of " + player.toString(event, debug) + " to " + lines.toString(event,debug) + " with packets";
+        return "set (skscoreboard|pixelSk|pixel) slot " + slot.toString(event,debug) + " of [current ]scoreboard of " + player.toString(event, debug) + " to " + lines.toString(event,debug) + " with packets";
     }
 
     protected void execute(@NotNull Event event) {
         if (lines == null || player == null || slot == null) return;
         if (lines.getSingle(event) == null) return;
-        if (player.getSingle(event) == null) return;
         if (slot.getSingle(event) == null) return;
         PixelSkScoreboard board = PixelSkScoreboard.getControl();
         try {
@@ -47,11 +46,10 @@ public class EffSetPacketSlot extends Effect {
             final Number n = this.slot.getSingle(event);
             if(n == null) return;
             int slot = n.intValue();
-            for (Player player : this.player.getAll(event)) {
+            for(Player player : this.player.getAll(event)) {
                 BPlayerBoard manager = board.getPacketScoreboards().getToAdd(player);
-                manager.set(lineToSet,slot);
+                manager.set(lineToSet, slot);
             }
-
         }catch (Throwable throwable) {
             board.getLogs().error("Can't execute &cEffSetPacketSlot.class &7error code: 281 &8(Probably is an issue created in your script)");
             board.getLogs().error(throwable);

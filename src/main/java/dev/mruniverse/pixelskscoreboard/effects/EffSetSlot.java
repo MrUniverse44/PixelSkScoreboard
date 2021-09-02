@@ -32,13 +32,12 @@ public class EffSetSlot extends Effect {
     }
 
     public @NotNull String toString(@Nullable Event event, boolean debug) {
-        return "set (skscoreboard|pixelSk|pixel) slot %-number% of [current ]scoreboard of " + player.toString(event, debug) + " to " + lines.toString(event,debug);
+        return "set (skscoreboard|pixelSk|pixel) slot " + slot.toString(event,debug) + " of [current ]scoreboard of " + player.toString(event, debug) + " to " + lines.toString(event,debug);
     }
 
     protected void execute(@NotNull Event event) {
         if (lines == null || player == null || slot == null) return;
         if (lines.getSingle(event) == null) return;
-        if (player.getSingle(event) == null) return;
         if (slot.getSingle(event) == null) return;
         PixelSkScoreboard board = PixelSkScoreboard.getControl();
         try {

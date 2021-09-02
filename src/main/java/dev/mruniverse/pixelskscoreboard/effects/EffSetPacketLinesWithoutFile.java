@@ -41,7 +41,6 @@ public class EffSetPacketLinesWithoutFile extends Effect {
         if (lines == null) return;
         if (player == null) return;
         if (lines.getSingle(event) == null) return;
-        if (player.getSingle(event) == null) return;
         PixelSkScoreboard board = PixelSkScoreboard.getControl();
         try {
             List<String> lines = new ArrayList<>(Arrays.asList(this.lines.getArray(event)));
